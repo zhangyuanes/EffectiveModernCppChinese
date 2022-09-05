@@ -837,7 +837,7 @@ void f(const T&amp; param)
          &lt;&lt; '\n';
 }
 </code></pre>
-<p><code>boost::typeindex::type_id_with_cvr</code>获取一个类型实参（我们想获得相应信息的那个类型），它不消除实参的<code>const</code>，<code>volatile</code>和引用修饰符（因此模板名中有“<code>with_cur</code>”）。结果是一个<code>boost::typeindex::type_index</code>对象，它的<code>pretty_name</code>成员函数输出一个<code>std::string</code>，包含我们能看懂的类型表示。
+<p><code>boost::typeindex::type_id_with_cvr</code>获取一个类型实参（我们想获得相应信息的那个类型），它不消除实参的<code>const</code>，<code>volatile</code>和引用修饰符（因此模板名中有“<code>with_cvr</code>”）。结果是一个<code>boost::typeindex::type_index</code>对象，它的<code>pretty_name</code>成员函数输出一个<code>std::string</code>，包含我们能看懂的类型表示。
 基于这个<code>f</code>的实现版本，再次考虑那个使用<code>typeid</code>时获取<code>param</code>类型信息出错的调用：</p>
 <pre><code class="language-cpp">std::vetor&lt;Widget&gt; createVec();         //工厂函数
 const auto vw = createVec();            //使用工厂函数返回值初始化vw
@@ -2839,7 +2839,7 @@ auto spw2 = wpw.lock();                     //同上，但是使用auto
 <li>用<code>std::weak_ptr</code>替代可能会悬空的<code>std::shared_ptr</code>。</li>
 <li><code>std::weak_ptr</code>的潜在使用场景包括：缓存、观察者列表、打破<code>std::shared_ptr</code>环状结构。</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="条款二十一优先考虑使用stdmake_unique和stdmake_shared而非new"><a class="header" href="#条款二十一优先考虑使用stdmake_unique和stdmake_shared而非new">条款二十一：优先考虑使用<code>std::make_unique</code>和<code>std::make_shared</code>而非<code>new</code></a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="条款二十一优先考虑使用stdmake_unique和stdmake_shared而非直接使用new"><a class="header" href="#条款二十一优先考虑使用stdmake_unique和stdmake_shared而非直接使用new">条款二十一：优先考虑使用<code>std::make_unique</code>和<code>std::make_shared</code>，而非直接使用<code>new</code></a></h2>
 <p><strong>Item 21: Prefer <code>std::make_unique</code> and <code>std::make_shared</code> to direct use of <code>new</code></strong></p>
 <p>让我们先对<code>std::make_unique</code>和<code>std::make_shared</code>做个铺垫。<code>std::make_shared</code>是C++11标准的一部分，但很可惜的是，<code>std::make_unique</code>不是。它从C++14开始加入标准库。如果你在使用C++11，不用担心，一个基础版本的<code>std::make_unique</code>是很容易自己写出的，如下：</p>
 <pre><code class="language-cpp">template&lt;typename T, typename... Ts&gt;
@@ -3235,7 +3235,7 @@ w1 = std::move(w2);         //移动赋值w1
 <p>在本章的这些小节中，非常重要的一点是要牢记形参永远是<strong>左值</strong>，即使它的类型是一个右值引用。比如，假设</p>
 <pre><code class="language-c++">void f(Widget&amp;&amp; w);
 </code></pre>
-<p>形参<code>w</code>是一个左值，即使它的类型是一个rvalue-reference-to-<code>Widget</code>。（如果这里震惊到你了，请重新回顾从本书<a href="https://github.com/kelthuzadx/EffectiveModernCppChinese/blob/master/Introduction.md">简介</a>开始的关于左值和右值的总览。）</p>
+<p>形参<code>w</code>是一个左值，即使它的类型是一个rvalue-reference-to-<code>Widget</code>。（如果这里震惊到你了，请重新回顾从本书<a href="https://github.com/CnTransGroup/EffectiveModernCppChinese/blob/master/src/Introduction.md">简介</a>开始的关于左值和右值的总览。）</p>
 <h2 id="条款二十三理解stdmove和stdforward"><a class="header" href="#条款二十三理解stdmove和stdforward">条款二十三：理解<code>std::move</code>和<code>std::forward</code></a></h2>
 <p><strong>Item 23: Understand <code>std::move</code> and <code>std::forward</code></strong></p>
 <p>为了了解<code>std::move</code>和<code>std::forward</code>，一种有用的方式是从<strong>它们不做什么</strong>这个角度来了解它们。<code>std::move</code>不移动（move）任何东西，<code>std::forward</code>也不转发（forward）任何东西。在运行时，它们不做任何事情。它们不产生任何可执行代码，一字节也没有。</p>
